@@ -27,8 +27,8 @@ importers:
         specifier: ^0.184.0
         version: 0.184.0
       tiltify-api-client:
-        specifier: github:ericthelemur/tiltify-api-client
-        version: https://codeload.github.com/ericthelemur/tiltify-api-client/tar.gz/491add201099c0515180203f872db27bad20c1b7
+        specifier: ^2.2.1
+        version: 2.2.1
     devDependencies:
       '@eslint/compat':
         specifier: ^2.0.4
@@ -43,7 +43,7 @@ importers:
         specifier: ^3.0.10
         version: 3.0.10(@sveltejs/kit@2.60.1(@sveltejs/vite-plugin-svelte@7.1.2(svelte@5.55.8(@typescript-eslint/types@8.59.4))(vite@8.0.13(@types/node@22.19.19)))(svelte@5.55.8(@typescript-eslint/types@8.59.4))(typescript@6.0.3)(vite@8.0.13(@types/node@22.19.19)))
       '@sveltejs/kit':
-        specifier: ^2.57.0
+        specifier: ^2.60.1
         version: 2.60.1(@sveltejs/vite-plugin-svelte@7.1.2(svelte@5.55.8(@typescript-eslint/types@8.59.4))(vite@8.0.13(@types/node@22.19.19)))(svelte@5.55.8(@typescript-eslint/types@8.59.4))(typescript@6.0.3)(vite@8.0.13(@types/node@22.19.19))
       '@sveltejs/vite-plugin-svelte':
         specifier: ^7.0.0
@@ -1378,9 +1378,8 @@ packages:
   three@0.184.0:
     resolution: {integrity: sha512-wtTRjG92pM5eUg/KuUnHsqSAlPM296brTOcLgMRqEeylYTh/CdtvKUvCyyCQTzFuStieWxvZb8mVTMvdPyUpxg==}
 
-  tiltify-api-client@https://codeload.github.com/ericthelemur/tiltify-api-client/tar.gz/491add201099c0515180203f872db27bad20c1b7:
-    resolution: {gitHosted: true, integrity: sha512-H5XJRh3VkC6/35t3UF2xw7TErhU8dA0Sm/yv8+eD3sEu/HckDrHlGri4cztmEaJRD9qwPyh/cJavs1+LxRVVdw==, tarball: https://codeload.github.com/ericthelemur/tiltify-api-client/tar.gz/491add201099c0515180203f872db27bad20c1b7}
-    version: 2.2.1
+  tiltify-api-client@2.2.1:
+    resolution: {integrity: sha512-PotN9rowNY+KnMqUXzFrH0h8BtN2ShkT4SN+29BBvwxIebKns43rehjgzLjW28hqpxYB/pH5H6t97ZUc+mnS6A==}
 
   tinyglobby@0.2.16:
     resolution: {integrity: sha512-pn99VhoACYR8nFHhxqix+uvsbXineAasWm5ojXoN8xEwK5Kd3/TrhNn1wByuD52UxWRLy8pu+kRMniEi6Eq9Zg==}
@@ -2727,7 +2726,7 @@ snapshots:
 
   three@0.184.0: {}
 
-  tiltify-api-client@https://codeload.github.com/ericthelemur/tiltify-api-client/tar.gz/491add201099c0515180203f872db27bad20c1b7:
+  tiltify-api-client@2.2.1:
     dependencies:
       axios: 1.16.1
       node-schedule: 2.1.1

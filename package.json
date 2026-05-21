@@ -18,7 +18,7 @@
 		"@eslint/js": "^10.0.1",
 		"@sveltejs/adapter-node": "^5.5.4",
 		"@sveltejs/adapter-static": "^3.0.10",
-		"@sveltejs/kit": "^2.57.0",
+		"@sveltejs/kit": "^2.60.1",
 		"@sveltejs/vite-plugin-svelte": "^7.0.0",
 		"@types/node": "^22",
 		"eslint": "^10.2.0",
@@ -40,6 +40,6 @@
 		"dotenv": "^17.4.2",
 		"sveltekit-sse": "^0.14.3",
 		"three": "^0.184.0",
-		"tiltify-api-client": "github:ericthelemur/tiltify-api-client"
+		"tiltify-api-client": "^2.2.1"
 	}
 }

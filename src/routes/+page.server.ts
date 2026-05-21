@@ -1,6 +1,6 @@
 import type { PageServerLoad } from "./$types";
-import TiltifyClient from "@ericthelemur/tiltify-api-client";
-import secrets from '$env/static/private';
+import TiltifyClient from "tiltify-api-client";
+import secrets from '$env/static/public';
 
 import { getContext } from "svelte";
 

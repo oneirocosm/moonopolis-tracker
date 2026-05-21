@@ -1,6 +1,6 @@
 import { json } from "@sveltejs/kit";
 import { createHmac } from "node:crypto";
-import secrets from "$env/static/private";
+import secrets from "$env/static/public";
 import { eventManager } from "$lib/events.js";
 
 function validateSignature(req: Request): boolean {
