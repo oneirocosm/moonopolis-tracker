@@ -1,6 +1,23 @@
-<script>
+<script lang="ts">
   import { Canvas } from "@threlte/core";
   import BuildingScene from "$lib/BuildingScene.svelte";
+	import type { PageProps } from './$types';
+	import { onMount } from "svelte";
+  import { source } from "sveltekit-sse";
+
+	let { data }: PageProps = $props();
+
+  let total = $state(0);
+
+  onMount(() => {
+    const totalHandler = source("/total").select("total");
+
+    totalHandler.subscribe((newTotal: string) => {
+      console.log("received data")
+      total = parseFloat(newTotal);
+    });
+
+  });
 
 </script>
 

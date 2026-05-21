@@ -36,6 +36,8 @@
 		"@threlte/core": "^8.5.14",
 		"@threlte/extras": "^9.19.0",
 		"@types/three": "^0.184.1",
-		"three": "^0.184.0"
+		"sveltekit-sse": "^0.14.3",
+		"three": "^0.184.0",
+		"tiltify-api-client": "github:ericthelemur/tiltify-api-client"
 	}
 }
