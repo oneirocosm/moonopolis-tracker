@@ -6,7 +6,7 @@ Command: npx @threlte/gltf@3.0.7 buildingA.glb --transform --types
 <script lang="ts">
 	import * as THREE from 'three';
 
-	import type { Snippet } from 'svelte';
+	import { onMount, type Snippet } from 'svelte';
 	import { T, type Props } from '@threlte/core';
 	import { useGltf, useDraco } from '@threlte/extras';
 
@@ -68,9 +68,33 @@ Command: npx @threlte/gltf@3.0.7 buildingA.glb --transform --types
 
 
 	const gltf = useGltf<GLTFResult>('/buildingA-transformed.glb', { dracoLoader: useDraco() });
-	const wall = $derived($gltf?.materials.Wall);
-	const ceiling = $derived($gltf?.materials.Ceiling);
-	const floor = $derived($gltf?.materials.Floor);
+	const wall = $derived.by(() => {
+		const temp = $gltf?.materials.Wall;
+		if (temp) {
+			let out = temp.clone();
+			temp.clippingPlanes = [pIn];
+			return out;
+		}
+		return temp;
+	});
+	const ceiling = $derived.by(() => {
+		const temp = $gltf?.materials.Ceiling;
+		if (temp) {
+			let out = temp.clone();
+			temp.clippingPlanes = [pIn];
+			return out;
+		}
+		return temp;
+	});
+	const floor = $derived.by(() => {
+		const temp = $gltf?.materials.Floor;
+		if (temp) {
+			let out = temp.clone();
+			temp.clippingPlanes = [pIn];
+			return out;
+		}
+		return temp;
+	});
 
 
 	// update with effect instead of creating a new plane
