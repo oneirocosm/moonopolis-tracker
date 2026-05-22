@@ -6,6 +6,7 @@
   import { source } from "sveltekit-sse";
 
 	let { data }: PageProps = $props();
+        //console.log("props from backend give: ": JSON.stringify(data));
 
   let total = $state(0);
 
@@ -13,7 +14,7 @@
     const totalHandler = source("/total").select("total");
 
     totalHandler.subscribe((newTotal: string) => {
-      console.log("received data")
+      console.log("received data: ", newTotal);
       total = parseFloat(newTotal);
     });
 
