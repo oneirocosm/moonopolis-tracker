@@ -4,107 +4,83 @@ Command: npx @threlte/gltf@3.0.7 buildingA.glb --transform --types
 -->
 
 <script lang="ts">
-  import * as THREE from 'three'
+	import * as THREE from 'three';
 
-  import type { Snippet } from 'svelte'
-  import { T, type Props } from '@threlte/core'
-  import { useGltf, useDraco } from '@threlte/extras'
+	import type { Snippet } from 'svelte';
+	import { T, type Props } from '@threlte/core';
+	import { useGltf, useDraco } from '@threlte/extras';
 
-  let {
-    fallback,
-    error,
-    children,
-    ref = $bindable(),
-    clippingPlanes,
-    ...props
-  }: Props<THREE.Group> & {
-    ref?: THREE.Group
-    children?: Snippet<[{ ref: THREE.Group }]>
-    fallback?: Snippet
-    error?: Snippet<[{ error: Error }]>
-    clippingPlanes?: THREE.Plane[]
-  } = $props()
+	let {
+		fallback,
+		error,
+		children,
+		ref = $bindable(),
+		clippingPlanes,
+		...props
+	}: Props<THREE.Group> & {
+		ref?: THREE.Group;
+		children?: Snippet<[{ ref: THREE.Group }]>;
+		fallback?: Snippet;
+		error?: Snippet<[{ error: Error }]>;
+		clippingPlanes?: THREE.Plane[];
+	} = $props();
 
-  type GLTFResult = {
-    nodes: {
-      Cube_1: THREE.Mesh
-      Cube_2: THREE.Mesh
-      Cube_3: THREE.Mesh
-      Cube_4: THREE.Mesh
-      Cube_5: THREE.Mesh
-    }
-    materials: {
-      Material: THREE.MeshStandardMaterial
-      Glass: THREE.MeshStandardMaterial
-      Wall: THREE.MeshStandardMaterial
-      Ceiling: THREE.MeshStandardMaterial
-      Floor: THREE.MeshStandardMaterial
-    }
-  }
+	type GLTFResult = {
+		nodes: {
+			Cube_1: THREE.Mesh;
+			Cube_2: THREE.Mesh;
+			Cube_3: THREE.Mesh;
+			Cube_4: THREE.Mesh;
+			Cube_5: THREE.Mesh;
+		};
+		materials: {
+			Material: THREE.MeshStandardMaterial;
+			Glass: THREE.MeshStandardMaterial;
+			Wall: THREE.MeshStandardMaterial;
+			Ceiling: THREE.MeshStandardMaterial;
+			Floor: THREE.MeshStandardMaterial;
+		};
+	};
 
-  let glass = new THREE.MeshPhysicalMaterial({
-    clearcoat: 1,
-    roughness: 0.05,
-    metalness: 0.9,
-    transparent: true,
-    opacity: 0.7,
-    reflectivity: 0.2,
-    ior: 2,
-    envMapIntensity: 0.9,
-    thickness: 0.2,
-    side: THREE.DoubleSide,
-    clippingPlanes: clippingPlanes,
-  });
-  let concrete = new THREE.MeshPhysicalMaterial({
-    color: "#c4c4c4",
-    metalness: 0.2,
-    roughness: 0.5,
-    ior: 1.5,
-    reflectivity: 0,
-    clippingPlanes: clippingPlanes,
-  });
+	let glass = new THREE.MeshPhysicalMaterial({
+		clearcoat: 1,
+		roughness: 0.05,
+		metalness: 0.9,
+		transparent: true,
+		opacity: 0.7,
+		reflectivity: 0.2,
+		ior: 2,
+		envMapIntensity: 0.9,
+		thickness: 0.2,
+		side: THREE.DoubleSide,
+		clippingPlanes: clippingPlanes
+	});
+	let concrete = new THREE.MeshPhysicalMaterial({
+		color: '#c4c4c4',
+		metalness: 0.2,
+		roughness: 0.5,
+		ior: 1.5,
+		reflectivity: 0,
+		clippingPlanes: clippingPlanes
+	});
 
-  const gltf = useGltf<GLTFResult>('/buildingA-transformed.glb', { dracoLoader: useDraco() })
+	const gltf = useGltf<GLTFResult>('/buildingA-transformed.glb', { dracoLoader: useDraco() });
 </script>
 
-<T.Group
-  bind:ref
-  dispose={false}
-  {...props}
->
-  {#await gltf}
-    {@render fallback?.()}
-  {:then gltf}
-    <T.Group
-      position={[0, 65, 0]}
-      scale={[8, 65, 8]}
-    >
-      <T.Mesh
-        geometry={gltf.nodes.Cube_1.geometry}
-        material={concrete}
-        castShadow
-        receiveShadow
-      />
-      <T.Mesh
-        geometry={gltf.nodes.Cube_2.geometry}
-        material={glass}
-      />
-      <T.Mesh
-        geometry={gltf.nodes.Cube_3.geometry}
-        material={gltf.materials.Wall}
-      />
-      <T.Mesh
-        geometry={gltf.nodes.Cube_4.geometry}
-        material={gltf.materials.Ceiling}
-      />
-      <T.Mesh
-        geometry={gltf.nodes.Cube_5.geometry}
-        material={gltf.materials.Floor}
-      />
-    </T.Group>
-  {:catch err}
-    {@render error?.({ error: err })}
-  {/await}
+<T.Group bind:ref dispose={false} {...props}>
+	{#await gltf}
+		{@render fallback?.()}
+	{:then gltf}
+		<T.Group position={[0, 65, 0]} scale={[8, 65, 8]}>
+			<T.Mesh geometry={gltf.nodes.Cube_1.geometry} material={concrete} castShadow receiveShadow />
+			<T.Mesh geometry={gltf.nodes.Cube_2.geometry} material={glass} />
+			<T.Mesh geometry={gltf.nodes.Cube_3.geometry} material={gltf.materials.Wall} />
+			<T.Mesh geometry={gltf.nodes.Cube_4.geometry} material={gltf.materials.Ceiling} />
+			<T.Mesh geometry={gltf.nodes.Cube_5.geometry} material={gltf.materials.Floor} />
+		</T.Group>
+	{:catch err}
+		{@render error?.({ error: err })}
+	{/await}
 
-  {@render children?.({ ref })}
+	{@render children?.({ ref })}
 </T.Group>

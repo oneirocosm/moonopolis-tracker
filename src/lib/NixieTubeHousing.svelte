@@ -4,64 +4,59 @@ Command: npx @threlte/gltf@3.0.7 nixieTubeHousing.glb --transform --types
 -->
 
 <script lang="ts">
-  import * as THREE from 'three'
+	import * as THREE from 'three';
 
-  import type { Snippet } from 'svelte'
-  import { T, type Props } from '@threlte/core'
-  import { useGltf, useDraco } from '@threlte/extras'
+	import type { Snippet } from 'svelte';
+	import { T, type Props } from '@threlte/core';
+	import { useGltf, useDraco } from '@threlte/extras';
 
-  let {
-    fallback,
-    error,
-    children,
-    ref = $bindable(),
-    ...props
-  }: Props<THREE.Group> & {
-    ref?: THREE.Group
-    children?: Snippet<[{ ref: THREE.Group }]>
-    fallback?: Snippet
-    error?: Snippet<[{ error: Error }]>
-  } = $props()
+	let {
+		fallback,
+		error,
+		children,
+		ref = $bindable(),
+		...props
+	}: Props<THREE.Group> & {
+		ref?: THREE.Group;
+		children?: Snippet<[{ ref: THREE.Group }]>;
+		fallback?: Snippet;
+		error?: Snippet<[{ error: Error }]>;
+	} = $props();
 
-  let glass = new THREE.MeshPhysicalMaterial({
-    clearcoat: 1,
-    roughness: 0.05,
-    metalness: 0.9,
-    transparent: true,
-    transmission: 1,
-    opacity: 0.3,
-    reflectivity: 0.2,
-    ior: 2,
-    envMapIntensity: 0.9,
-    thickness: 0.2,
-    side: THREE.DoubleSide,
-  });
+	let glass = new THREE.MeshPhysicalMaterial({
+		clearcoat: 1,
+		roughness: 0.05,
+		metalness: 0.9,
+		transparent: true,
+		transmission: 1,
+		opacity: 0.3,
+		reflectivity: 0.2,
+		ior: 2,
+		envMapIntensity: 0.9,
+		thickness: 0.2,
+		side: THREE.DoubleSide
+	});
 
-  type GLTFResult = {
-    nodes: {
-      Sphere: THREE.Mesh
-    }
-    materials: {}
-  }
+	type GLTFResult = {
+		nodes: {
+			Sphere: THREE.Mesh;
+		};
+		materials: {};
+	};
 
-  const gltf = useGltf<GLTFResult>('/nixieTubeHousing-transformed.glb', { dracoLoader: useDraco() })
+	const gltf = useGltf<GLTFResult>('/nixieTubeHousing-transformed.glb', {
+		dracoLoader: useDraco()
+	});
 </script>
 
-<T.Group
-  bind:ref
-  dispose={false}
-  {...props}
->
-  {#await gltf}
-    {@render fallback?.()}
-  {:then gltf}
-    <T.Mesh
-      geometry={gltf.nodes.Sphere.geometry}
-      material={glass}
-    />
-  {:catch err}
-    {@render error?.({ error: err })}
-  {/await}
+<T.Group bind:ref dispose={false} {...props}>
+	{#await gltf}
+		{@render fallback?.()}
+	{:then gltf}
+		<T.Mesh geometry={gltf.nodes.Sphere.geometry} material={glass} />
+	{:catch err}
+		{@render error?.({ error: err })}
+	{/await}
 
-  {@render children?.({ ref })}
+	{@render children?.({ ref })}
 </T.Group>

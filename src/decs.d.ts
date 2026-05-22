@@ -1,2 +1,1 @@
-
-declare module "@ericthelemur/tiltify-api-client";
+declare module '@ericthelemur/tiltify-api-client';

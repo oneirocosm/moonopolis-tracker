@@ -1,4 +1,4 @@
-import TiltifyClient from "tiltify-api-client";
+import TiltifyClient from 'tiltify-api-client';
 import { env } from '$env/dynamic/private';
 
 console.log(env.TILTIFY_CLIENT_ID);

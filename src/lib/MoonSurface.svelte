@@ -4,53 +4,45 @@ Command: npx @threlte/gltf@3.0.7 MoonSurface.glb --transform --types
 -->
 
 <script lang="ts">
-  import type * as THREE from 'three'
+	import type * as THREE from 'three';
 
-  import type { Snippet } from 'svelte'
-  import { T, type Props } from '@threlte/core'
-  import { useGltf, useDraco } from '@threlte/extras'
+	import type { Snippet } from 'svelte';
+	import { T, type Props } from '@threlte/core';
+	import { useGltf, useDraco } from '@threlte/extras';
 
-  let {
-    fallback,
-    error,
-    children,
-    ref = $bindable(),
-    ...props
-  }: Props<THREE.Group> & {
-    ref?: THREE.Group
-    children?: Snippet<[{ ref: THREE.Group }]>
-    fallback?: Snippet
-    error?: Snippet<[{ error: Error }]>
-  } = $props()
+	let {
+		fallback,
+		error,
+		children,
+		ref = $bindable(),
+		...props
+	}: Props<THREE.Group> & {
+		ref?: THREE.Group;
+		children?: Snippet<[{ ref: THREE.Group }]>;
+		fallback?: Snippet;
+		error?: Snippet<[{ error: Error }]>;
+	} = $props();
 
-  type GLTFResult = {
-    nodes: {
-      Grid: THREE.Mesh
-    }
-    materials: {
-      Moon: THREE.MeshStandardMaterial
-    }
-  }
+	type GLTFResult = {
+		nodes: {
+			Grid: THREE.Mesh;
+		};
+		materials: {
+			Moon: THREE.MeshStandardMaterial;
+		};
+	};
 
-  const gltf = useGltf<GLTFResult>('/MoonSurface-transformed.glb', { dracoLoader: useDraco() })
+	const gltf = useGltf<GLTFResult>('/MoonSurface-transformed.glb', { dracoLoader: useDraco() });
 </script>
 
-<T.Group
-  bind:ref
-  dispose={false}
-  {...props}
->
-  {#await gltf}
-    {@render fallback?.()}
-  {:then gltf}
-    <T.Mesh
-      geometry={gltf.nodes.Grid.geometry}
-      material={gltf.materials.Moon}
-      receiveShadow
-    />
-  {:catch err}
-    {@render error?.({ error: err })}
-  {/await}
+<T.Group bind:ref dispose={false} {...props}>
+	{#await gltf}
+		{@render fallback?.()}
+	{:then gltf}
+		<T.Mesh geometry={gltf.nodes.Grid.geometry} material={gltf.materials.Moon} receiveShadow />
+	{:catch err}
+		{@render error?.({ error: err })}
+	{/await}
 
-  {@render children?.({ ref })}
+	{@render children?.({ ref })}
 </T.Group>

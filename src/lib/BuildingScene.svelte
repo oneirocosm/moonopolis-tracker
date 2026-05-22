@@ -1,65 +1,65 @@
 <script lang="ts">
-    import { T, extend } from "@threlte/core";
-    import { Plane, Vector3, DoubleSide, PointLight, NumberKeyframeTrack } from "three";
-    
-    import { useThrelte } from "@threlte/core";
-    import { onMount } from "svelte";
+	import { T, extend } from '@threlte/core';
+	import { Plane, Vector3, DoubleSide, PointLight, NumberKeyframeTrack } from 'three';
 
-    import { Stars } from "@threlte/extras";
-    import BuildingA from "./BuildingA.svelte";
-    import NixieTube from "./NixieTube.svelte";
-    import MoonSurface from "./MoonSurface.svelte";
-    
-    let front: [number, number, number] = [190, 150, 174];
-    let side: [number, number, number] = [171, 150, 190];
+	import { useThrelte } from '@threlte/core';
+	import { onMount } from 'svelte';
 
-    function getShifted(value: number, digit: number): number {
-        value = Math.min(value, 99999.99);
-        value = Math.max(value, 0);
+	import { Stars } from '@threlte/extras';
+	import BuildingA from './BuildingA.svelte';
+	import NixieTube from './NixieTube.svelte';
+	import MoonSurface from './MoonSurface.svelte';
 
-        return Math.trunc(value / Math.pow(10, digit));
-    }
+	let front: [number, number, number] = [190, 150, 174];
+	let side: [number, number, number] = [171, 150, 190];
 
-    let total = 1020.593;
+	function getShifted(value: number, digit: number): number {
+		value = Math.min(value, 99999.99);
+		value = Math.max(value, 0);
 
-    function getDigitDefaultZero(value: number, digit: number): string {
-        const shifted = getShifted(value, digit);
+		return Math.trunc(value / Math.pow(10, digit));
+	}
 
-        const ones = shifted % 10;
-        return ones.toString();
-    }
+	let total = 1020.593;
 
-    function getDigitOther(value: number, digit: number): string {
-        const shifted = getShifted(value, digit);
-        const shiftedOneFewer = getShifted(value, digit - 1);
+	function getDigitDefaultZero(value: number, digit: number): string {
+		const shifted = getShifted(value, digit);
 
-        if (shifted == 0 && shiftedOneFewer == 0 && digit != 1) {
-            return " ";
-        }
+		const ones = shifted % 10;
+		return ones.toString();
+	}
 
-        if (shifted == 0) {
-            return "$";
-        }
+	function getDigitOther(value: number, digit: number): string {
+		const shifted = getShifted(value, digit);
+		const shiftedOneFewer = getShifted(value, digit - 1);
 
-        const out = shifted % 10;
-        return out.toString();
-    }
+		if (shifted == 0 && shiftedOneFewer == 0 && digit != 1) {
+			return ' ';
+		}
 
-  const { renderer } = useThrelte();
-  onMount(() => {
-    renderer.localClippingEnabled = true;
-  });
-    let p = new Plane(new Vector3(0, -1, 0), 130);
+		if (shifted == 0) {
+			return '$';
+		}
+
+		const out = shifted % 10;
+		return out.toString();
+	}
+
+	const { renderer } = useThrelte();
+	onMount(() => {
+		renderer.localClippingEnabled = true;
+	});
+	let p = new Plane(new Vector3(0, -1, 0), 130);
 </script>
 
-<Stars radius={190} factor={40} count={10000}/>
+<Stars radius={190} factor={40} count={10000} />
 
 <T.PerspectiveCamera
-    makeDefault
-    position={[190, 164, 190]}
-    oncreate={(ref)=> {
-        ref.lookAt(0, 80, 0)
-    }}
+	makeDefault
+	position={[190, 164, 190]}
+	oncreate={(ref) => {
+		ref.lookAt(0, 80, 0);
+	}}
 />
 <!--
 <T.PerspectiveCamera
@@ -78,23 +78,16 @@
     castShadow
 />
 -->
-<T.DirectionalLight
-    position={[400, 80, 100]}
-    castShadow
-/>
+<T.DirectionalLight position={[400, 80, 100]} castShadow />
 
-<T.PointLight
-    position={[170, 142, 173]}
-    castShadow
-    intensity={100}
-/>
+<T.PointLight position={[170, 142, 173]} castShadow intensity={100} />
 
-<T.Mesh scale={1.4} castShadow >
-    <BuildingA castShadow  clippingPlanes={[p]}/>
+<T.Mesh scale={1.4} castShadow>
+	<BuildingA castShadow clippingPlanes={[p]} />
 </T.Mesh>
 
 <T.Mesh position={[168, 65, 173]} scale={0.6} castShadow receiveShadow>
-    <BuildingA castShadow receiveShadow/>
+	<BuildingA castShadow receiveShadow />
 </T.Mesh>
 
 <!--
@@ -127,54 +120,51 @@
     <T.MeshBasicMaterial color="orange"/>
 </T.Mesh>
 -->
-<T.Group
-    position={[0, 0, 1.2]}
->
-
-<NixieTube
-    position={[171.5, 143, 174]}
-    scale={0.5}
-    rotation={[0, Math.PI/2, 0]}
-    value={getDigitOther(total, 4)}
-/>
-<NixieTube
-    position={[171.5, 143, 172.8]}
-    scale={0.5}
-    rotation={[0, Math.PI/2, 0]}
-    value={getDigitOther(total, 3)}
-/>
-<NixieTube
-    position={[171.5, 143, 171.6]}
-    scale={0.5}
-    rotation={[0, Math.PI/2, 0]}
-    value={getDigitOther(total, 2)}
-/>
-<NixieTube
-    position={[171.5, 143, 170.4]}
-    scale={0.5}
-    rotation={[0, Math.PI/2, 0]}
-    value={getDigitOther(total, 1)}
-/>
-<NixieTube
-    position={[171.5, 143, 169.2]}
-    scale={0.5}
-    rotation={[0, Math.PI/2, 0]}
-    value={getDigitDefaultZero(total, 0)}
-/>
-<NixieTube
-    position={[171.5, 143, 168.1]}
-    scale={0.25}
-    rotation={[0, Math.PI/2, 0]}
-    value={getDigitDefaultZero(total, -1)}
-    intensity={3}
-/>
-<NixieTube
-    position={[171.5, 143, 167.5]}
-    scale={0.25}
-    rotation={[0, Math.PI/2, 0]}
-    value={getDigitDefaultZero(total, -2)}
-    intensity={3}
-/>
+<T.Group position={[0, 0, 1.2]}>
+	<NixieTube
+		position={[171.5, 143, 174]}
+		scale={0.5}
+		rotation={[0, Math.PI / 2, 0]}
+		value={getDigitOther(total, 4)}
+	/>
+	<NixieTube
+		position={[171.5, 143, 172.8]}
+		scale={0.5}
+		rotation={[0, Math.PI / 2, 0]}
+		value={getDigitOther(total, 3)}
+	/>
+	<NixieTube
+		position={[171.5, 143, 171.6]}
+		scale={0.5}
+		rotation={[0, Math.PI / 2, 0]}
+		value={getDigitOther(total, 2)}
+	/>
+	<NixieTube
+		position={[171.5, 143, 170.4]}
+		scale={0.5}
+		rotation={[0, Math.PI / 2, 0]}
+		value={getDigitOther(total, 1)}
+	/>
+	<NixieTube
+		position={[171.5, 143, 169.2]}
+		scale={0.5}
+		rotation={[0, Math.PI / 2, 0]}
+		value={getDigitDefaultZero(total, 0)}
+	/>
+	<NixieTube
+		position={[171.5, 143, 168.1]}
+		scale={0.25}
+		rotation={[0, Math.PI / 2, 0]}
+		value={getDigitDefaultZero(total, -1)}
+		intensity={3}
+	/>
+	<NixieTube
+		position={[171.5, 143, 167.5]}
+		scale={0.25}
+		rotation={[0, Math.PI / 2, 0]}
+		value={getDigitDefaultZero(total, -2)}
+		intensity={3}
+	/>
 </T.Group>
 
 <!--
@@ -207,7 +197,7 @@
 -->
 
 <T.DirectionalLight position={[0, 1, -2]} />
-<MoonSurface scale={[20, 18, 20]} rotation.y={-0.8*Math.PI/2} receiveShadow/>
+<MoonSurface scale={[20, 18, 20]} rotation.y={(-0.8 * Math.PI) / 2} receiveShadow />
 <!--
 <T.Mesh
     rotation.x={-Math.PI / 2}

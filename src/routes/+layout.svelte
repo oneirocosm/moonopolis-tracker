@@ -6,11 +6,12 @@
 
 <svelte:head>
 	<link rel="icon" href={favicon} />
-    <style>
-      html, body {
-        background-color: #000;
-      }
-    </style>
+	<style>
+		html,
+		body {
+			background-color: #000;
+		}
+	</style>
 </svelte:head>
 
 {@render children()}
