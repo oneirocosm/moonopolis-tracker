@@ -9,6 +9,13 @@
 	import BuildingA from './BuildingA.svelte';
 	import NixieTube from './NixieTube.svelte';
 	import MoonSurface from './MoonSurface.svelte';
+	import { scale } from 'svelte/transition';
+
+	let { total, ...props }: {total: number} = $props();
+	let height: number = $derived.by(() => {
+		let s = Math.min(total / 5000.0, 1)
+		return s * 185;
+	})
 
 	let front: [number, number, number] = [190, 150, 174];
 	let side: [number, number, number] = [171, 150, 190];
@@ -19,8 +26,6 @@
 
 		return Math.trunc(value / Math.pow(10, digit));
 	}
-
-	let total = 1020.593;
 
 	function getDigitDefaultZero(value: number, digit: number): string {
 		const shifted = getShifted(value, digit);
@@ -49,7 +54,6 @@
 	onMount(() => {
 		renderer.localClippingEnabled = true;
 	});
-	let p = new Plane(new Vector3(0, -1, 0), 130);
 </script>
 
 <Stars radius={190} factor={40} count={10000} />
@@ -83,7 +87,7 @@
 <T.PointLight position={[170, 142, 173]} castShadow intensity={100} />
 
 <T.Mesh scale={1.4} castShadow>
-	<BuildingA castShadow clippingPlanes={[p]} />
+	<BuildingA castShadow height={height} />
 </T.Mesh>
 
 <T.Mesh position={[168, 65, 173]} scale={0.6} castShadow receiveShadow>

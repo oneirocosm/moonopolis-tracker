@@ -7,14 +7,16 @@ export const POST: RequestHandler = async () => {
 		// Create a function so we can remove it when the client disconnects
 		const send = (total: string) => {
 			console.log('sending to frontend: total:', total);
-			const { error } = emit('message', total);
+			const { error } = emit('total', total);
 			// We errored sending to client - likely because they've disconnected
 			if (error) {
+        console.error("sse disconnect: ", error)
 				return cancel();
 			}
 		};
 
 		const cancel = () => {
+      console.log("cancelling event listener total");
 			eventManager.removeListener('total', send);
 		};
 

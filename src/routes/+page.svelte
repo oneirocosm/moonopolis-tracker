@@ -7,22 +7,26 @@
 
 	let { data }: PageProps = $props();
 	//console.log("props from backend give: ": JSON.stringify(data));
+	console.log("intializing");
+	console.log("initial read gave ", data.totalInit);
 
-	let total = $state(0);
+	let total = $state(data?.totalInit ?? 0);
 
 	onMount(() => {
 		const totalHandler = source('/total').select('total');
 
 		totalHandler.subscribe((newTotal: string) => {
 			console.log('received data: ', newTotal);
-			total = parseFloat(newTotal);
+			if (newTotal != "") {
+				total = parseFloat(newTotal);
+			}
 		});
 	});
 </script>
 
 <main>
 	<Canvas>
-		<BuildingScene />
+		<BuildingScene total={total}/>
 	</Canvas>
 </main>
 

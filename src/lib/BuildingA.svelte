@@ -15,14 +15,14 @@ Command: npx @threlte/gltf@3.0.7 buildingA.glb --transform --types
 		error,
 		children,
 		ref = $bindable(),
-		clippingPlanes,
+		height,
 		...props
 	}: Props<THREE.Group> & {
 		ref?: THREE.Group;
 		children?: Snippet<[{ ref: THREE.Group }]>;
 		fallback?: Snippet;
 		error?: Snippet<[{ error: Error }]>;
-		clippingPlanes?: THREE.Plane[];
+		height?: number,
 	} = $props();
 
 	type GLTFResult = {
@@ -41,8 +41,10 @@ Command: npx @threlte/gltf@3.0.7 buildingA.glb --transform --types
 			Floor: THREE.MeshStandardMaterial;
 		};
 	};
+	let pOut = $derived(new THREE.Plane(new THREE.Vector3(0, -1, 0), height ?? 99999));
+	let pIn = $derived(new THREE.Plane(new THREE.Vector3(0, -1, 0), (height ?? 99999) + 10))
 
-	let glass = new THREE.MeshPhysicalMaterial({
+	let glass = $derived(new THREE.MeshPhysicalMaterial({
 		clearcoat: 1,
 		roughness: 0.05,
 		metalness: 0.9,
@@ -53,18 +55,36 @@ Command: npx @threlte/gltf@3.0.7 buildingA.glb --transform --types
 		envMapIntensity: 0.9,
 		thickness: 0.2,
 		side: THREE.DoubleSide,
-		clippingPlanes: clippingPlanes
-	});
-	let concrete = new THREE.MeshPhysicalMaterial({
+		clippingPlanes: [pOut]
+	}));
+	let concrete = $derived(new THREE.MeshPhysicalMaterial({
 		color: '#c4c4c4',
 		metalness: 0.2,
 		roughness: 0.5,
 		ior: 1.5,
 		reflectivity: 0,
-		clippingPlanes: clippingPlanes
-	});
+		clippingPlanes: [pOut]
+	}));
+
 
 	const gltf = useGltf<GLTFResult>('/buildingA-transformed.glb', { dracoLoader: useDraco() });
+	const wall = $derived($gltf?.materials.Wall);
+	const ceiling = $derived($gltf?.materials.Ceiling);
+	const floor = $derived($gltf?.materials.Floor);
+
+
+	// update with effect instead of creating a new plane
+	$effect(() => {
+		if (wall) {
+			wall.clippingPlanes = [pIn];
+		}
+		if (ceiling) {
+			ceiling.clippingPlanes = [pIn];
+		}
+		if (floor) {
+			floor.clippingPlanes = [pIn];
+		}
+	})
 </script>
 
 <T.Group bind:ref dispose={false} {...props}>
@@ -74,9 +94,9 @@ Command: npx @threlte/gltf@3.0.7 buildingA.glb --transform --types
 		<T.Group position={[0, 65, 0]} scale={[8, 65, 8]}>
 			<T.Mesh geometry={gltf.nodes.Cube_1.geometry} material={concrete} castShadow receiveShadow />
 			<T.Mesh geometry={gltf.nodes.Cube_2.geometry} material={glass} />
-			<T.Mesh geometry={gltf.nodes.Cube_3.geometry} material={gltf.materials.Wall} />
-			<T.Mesh geometry={gltf.nodes.Cube_4.geometry} material={gltf.materials.Ceiling} />
-			<T.Mesh geometry={gltf.nodes.Cube_5.geometry} material={gltf.materials.Floor} />
+			<T.Mesh geometry={gltf.nodes.Cube_3.geometry} material={wall} />
+			<T.Mesh geometry={gltf.nodes.Cube_4.geometry} material={ceiling} />
+			<T.Mesh geometry={gltf.nodes.Cube_5.geometry} material={floor} />
 		</T.Group>
 	{:catch err}
 		{@render error?.({ error: err })}
