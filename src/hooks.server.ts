@@ -9,7 +9,7 @@ export const init: ServerInit = async () => {
 	await tiltifyClient.initialize();
 	console.log('bar');
 
-    /*
+	/*
     let i = 43;
     setInterval(() => {
         console.log("emitting");
@@ -26,5 +26,4 @@ export const init: ServerInit = async () => {
 	tiltifyClient.Webhook.subscribe(env.TILTIFY_WEBHOOK_ID, env.TILTIFY_CAMPAIGN_ID, events, () => {
 		console.log('webhooks activated');
 	});
-
 };

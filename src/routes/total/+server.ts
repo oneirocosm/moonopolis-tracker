@@ -10,13 +10,13 @@ export const POST: RequestHandler = async () => {
 			const { error } = emit('total', total);
 			// We errored sending to client - likely because they've disconnected
 			if (error) {
-        console.error("sse disconnect: ", error)
+				console.error('sse disconnect: ', error);
 				return cancel();
 			}
 		};
 
 		const cancel = () => {
-      console.log("cancelling event listener total");
+			console.log('cancelling event listener total');
 			eventManager.removeListener('total', send);
 		};
 

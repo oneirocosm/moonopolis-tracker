@@ -11,11 +11,11 @@
 	import MoonSurface from './MoonSurface.svelte';
 	import { scale } from 'svelte/transition';
 
-	let { total, ...props }: {total: number} = $props();
+	let { total, ...props }: { total: number } = $props();
 	let height: number = $derived.by(() => {
-		let s = Math.min(total / 5000.0, 1)
+		let s = Math.min(total / 5000.0, 1);
 		return s * 185;
-	})
+	});
 
 	let front: [number, number, number] = [190, 150, 174];
 	let side: [number, number, number] = [171, 150, 190];
@@ -87,7 +87,7 @@
 <T.PointLight position={[170, 142, 173]} castShadow intensity={100} />
 
 <T.Mesh scale={1.4} castShadow>
-	<BuildingA castShadow height={height} />
+	<BuildingA castShadow {height} />
 </T.Mesh>
 
 <T.Mesh position={[168, 65, 173]} scale={0.6} castShadow receiveShadow>

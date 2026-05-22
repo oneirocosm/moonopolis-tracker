@@ -22,7 +22,7 @@ Command: npx @threlte/gltf@3.0.7 buildingA.glb --transform --types
 		children?: Snippet<[{ ref: THREE.Group }]>;
 		fallback?: Snippet;
 		error?: Snippet<[{ error: Error }]>;
-		height?: number,
+		height?: number;
 	} = $props();
 
 	type GLTFResult = {
@@ -42,30 +42,33 @@ Command: npx @threlte/gltf@3.0.7 buildingA.glb --transform --types
 		};
 	};
 	let pOut = $derived(new THREE.Plane(new THREE.Vector3(0, -1, 0), height ?? 99999));
-	let pIn = $derived(new THREE.Plane(new THREE.Vector3(0, -1, 0), (height ?? 99999) + 10))
+	let pIn = $derived(new THREE.Plane(new THREE.Vector3(0, -1, 0), (height ?? 99999) + 10));
 
-	let glass = $derived(new THREE.MeshPhysicalMaterial({
-		clearcoat: 1,
-		roughness: 0.05,
-		metalness: 0.9,
-		transparent: true,
-		opacity: 0.7,
-		reflectivity: 0.2,
-		ior: 2,
-		envMapIntensity: 0.9,
-		thickness: 0.2,
-		side: THREE.DoubleSide,
-		clippingPlanes: [pOut]
-	}));
-	let concrete = $derived(new THREE.MeshPhysicalMaterial({
-		color: '#c4c4c4',
-		metalness: 0.2,
-		roughness: 0.5,
-		ior: 1.5,
-		reflectivity: 0,
-		clippingPlanes: [pOut]
-	}));
-
+	let glass = $derived(
+		new THREE.MeshPhysicalMaterial({
+			clearcoat: 1,
+			roughness: 0.05,
+			metalness: 0.9,
+			transparent: true,
+			opacity: 0.7,
+			reflectivity: 0.2,
+			ior: 2,
+			envMapIntensity: 0.9,
+			thickness: 0.2,
+			side: THREE.DoubleSide,
+			clippingPlanes: [pOut]
+		})
+	);
+	let concrete = $derived(
+		new THREE.MeshPhysicalMaterial({
+			color: '#c4c4c4',
+			metalness: 0.2,
+			roughness: 0.5,
+			ior: 1.5,
+			reflectivity: 0,
+			clippingPlanes: [pOut]
+		})
+	);
 
 	const gltf = useGltf<GLTFResult>('/buildingA-transformed.glb', { dracoLoader: useDraco() });
 	const wall = $derived.by(() => {
@@ -96,7 +99,6 @@ Command: npx @threlte/gltf@3.0.7 buildingA.glb --transform --types
 		return temp;
 	});
 
-
 	// update with effect instead of creating a new plane
 	$effect(() => {
 		if (wall) {
@@ -108,7 +110,7 @@ Command: npx @threlte/gltf@3.0.7 buildingA.glb --transform --types
 		if (floor) {
 			floor.clippingPlanes = [pIn];
 		}
-	})
+	});
 </script>
 
 <T.Group bind:ref dispose={false} {...props}>

@@ -27,12 +27,12 @@ export async function POST({ request }) {
 	}
 	const body = await request.json();
 	if (body?.meta?.event_type == 'public:direct:donation_updated') {
-		eventManager.emit('donation', body?.data?.amount?.value);
-		console.log('received donation: ', body?.data?.amount?.value);
+		eventManager.emit('donation', body?.data?.amount?.value.toString());
+		console.log('received donation: ', body?.data?.amount?.value.toString());
 		// handle donation
 	} else if (body?.meta?.event_type == 'public:direct:fact_updated') {
-		eventManager.emit('total', body?.data?.amount_raised?.value);
-		console.log('received total: ', body?.data?.amount_raised?.value);
+		eventManager.emit('total', body?.data?.amount_raised?.value.toString());
+		console.log('received total: ', body?.data?.amount_raised?.value.toString());
 		// handle total
 	}
 
