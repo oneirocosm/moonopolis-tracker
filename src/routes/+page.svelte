@@ -11,21 +11,26 @@
 	console.log('intializing');
 	console.log('initial read gave ', data.totalInit);
 
-	let total = new Tween(0, {
+	let total = new Tween(0.0, {
 		duration: (from, to) => {
 			return Math.abs(to - from)/0.02;
 		}
 	});
 
 	onMount(() => {
-		total.set(data.totalInit, {duration: 0});
+		total.set(parseFloat(data.totalInit), {duration: 0});
 		const totalHandler = source('/total').select('total');
 
 		totalHandler.subscribe((newTotal: string) => {
 			console.log('received data: ', newTotal);
+                        console.log("old type is:", typeof(newTotal));
+                        try {
 			if (newTotal != '') {
 				total.target = parseFloat(newTotal);
 			}
+                        } catch(e) {
+				console.log(e);
+                        }
 		});
 	});
 </script>
