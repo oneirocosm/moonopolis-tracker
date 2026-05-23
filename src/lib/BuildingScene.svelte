@@ -7,14 +7,36 @@
 
 	import { Stars } from '@threlte/extras';
 	import BuildingA from './BuildingA.svelte';
+	import BuildingB from './BuildingB.svelte';
 	import NixieTube from './NixieTube.svelte';
 	import MoonSurface from './MoonSurface.svelte';
-	import { scale } from 'svelte/transition';
 
 	let { total, ...props }: { total: number } = $props();
-	let height: number = $derived.by(() => {
+	let heightA: number = $derived.by(() => {
 		let s = Math.min(total / 5000.0, 1);
-		return s * 185;
+		return s * 144;
+	});
+	let heightA2: number = $derived.by(() => {
+		let s = Math.max(Math.min((total - 1000.0)/(5500.0 - 1000.0), 1), 0);
+		return s * 144;
+	});
+	let heightA3: number = $derived.by(() => {
+		let s = Math.max(Math.min((total - 2000.0)/(5900.0 - 2000.0), 1), 0);
+		return s * 144;
+	});
+	let heightA4: number = $derived.by(() => {
+		let s = Math.max(Math.min((total - 3000.0)/(6200.0 - 3000.0), 1), 0);
+		return s * 144;
+	});
+	let heightA5: number = $derived.by(() => {
+		let s = Math.max(Math.min((total - 4000.0)/(6700.0 - 4000.0), 1), 0);
+		return s * 144;
+	});
+
+
+	let heightB: number = $derived.by(() => {
+		let s = Math.max(Math.min((total - 5000.0)/(8000.0 - 5000.0), 1), 0);
+		return s * 190;
 	});
 
 	let front: [number, number, number] = [190, 150, 174];
@@ -85,9 +107,28 @@
 <T.DirectionalLight position={[400, 80, 100]} castShadow />
 
 <T.PointLight position={[170, 142, 173]} castShadow intensity={100} />
+<T.Mesh scale={1.1} position={[-120, 0, -195]} castShadow>
+	<BuildingA castShadow height={heightA} />
+</T.Mesh>
 
-<T.Mesh scale={1.4} castShadow>
-	<BuildingA castShadow {height} />
+<T.Mesh scale={1.1} position={[-160, 0, -195]} castShadow>
+	<BuildingA castShadow height={heightA2} />
+</T.Mesh>
+<T.Mesh scale={1.1} position={[-160, 0, -125]} castShadow>
+	<BuildingA castShadow height={heightA3} />
+</T.Mesh>
+
+<T.Mesh scale={1.1} position={[-110, 0, -125]} rotation.y={-Math.PI/2} castShadow>
+	<BuildingA castShadow height={heightA4} />
+</T.Mesh>
+
+<T.Mesh scale={1.1} position={[-90, 0, -45]} castShadow>
+	<BuildingA castShadow height={heightA5} />
+</T.Mesh>
+
+
+<T.Mesh scale={0.5} position.z={-10} rotation.y={-Math.PI/2} castShadow>
+	<BuildingB castShadow height={heightB} />
 </T.Mesh>
 
 <T.Mesh position={[168, 65, 173]} scale={0.6} castShadow receiveShadow>
