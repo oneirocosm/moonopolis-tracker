@@ -4,22 +4,27 @@
 	import type { PageProps } from './$types';
 	import { onMount } from 'svelte';
 	import { source } from 'sveltekit-sse';
+	import { Tween } from 'svelte/motion';
 
 	let { data }: PageProps = $props();
 	//console.log("props from backend give: ": JSON.stringify(data));
 	console.log('intializing');
 	console.log('initial read gave ', data.totalInit);
 
-	let total = $state(0);
+	let total = new Tween(0, {
+		duration: (from, to) => {
+			return Math.abs(to - from)/0.02;
+		}
+	});
 
 	onMount(() => {
-		total = data.totalInit;
+		total.set(data.totalInit, {duration: 0});
 		const totalHandler = source('/total').select('total');
 
 		totalHandler.subscribe((newTotal: string) => {
 			console.log('received data: ', newTotal);
 			if (newTotal != '') {
-				total = parseFloat(newTotal);
+				total.target = parseFloat(newTotal);
 			}
 		});
 	});
@@ -27,7 +32,7 @@
 
 <main>
 	<Canvas>
-		<BuildingScene {total} />
+		<BuildingScene total={total.current} />
 	</Canvas>
 </main>
 
