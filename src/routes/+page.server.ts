@@ -5,7 +5,7 @@ import { tiltifyClient } from '$lib/tiltify-client';
 
 export const load: PageServerLoad = async ({ params }) => {
 	console.log('baz');
-	const totalInit = await new Promise((resolve, reject) => {
+	const totalInit: number = await new Promise((resolve, reject) => {
 		tiltifyClient?.Campaigns?.get(env.TILTIFY_CAMPAIGN_ID, (campaign) => {
 			console.log('checking campaign gave total of:', campaign.amount_raised.value);
 			resolve(campaign.amount_raised.value as number);
